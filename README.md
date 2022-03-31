@@ -32,6 +32,7 @@ public final MyConnection extends ConnectionWrap {
     }
 }
 ``` 
+
 ### `LockedConnection`
 
 Sometimes, we don't want some pieces of code to close your connection after use. So, to prevent
@@ -43,6 +44,7 @@ new LockedConnection(
     connection
 )
 ```
+
 ### `LocalLockedDataSource`
 
 Sometimes, we are in situations where we want to use only one connection during the current thread
