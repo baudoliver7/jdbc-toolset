@@ -78,7 +78,7 @@ SOFTWARE.
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <version>1.4.200</version>
+      <version>2.1.210</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -150,42 +150,6 @@ SOFTWARE.
             <artifactId>nexus-staging-maven-plugin</artifactId>
             <configuration>
               <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>hit-refresh</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>3.0.0</version>
-            <executions>
-              <execution>
-                <id>start-server</id>
-                <phase>pre-integration-test</phase>
-                <goals>
-                  <goal>java</goal>
-                </goals>
-              </execution>
-            </executions>
-            <configuration>
-              <mainClass>io.surati.gap.ma.module.server.Main</mainClass>
-              <!-- your main class -->
-              <cleanupDaemonThreads>false</cleanupDaemonThreads>
-              <arguments>
-                <argument>--port=${port}</argument>
-                <argument>--driver=org.postgresql.Driver</argument>
-                <argument>--db-host=${pgsql.host}</argument>
-                <argument>--db-name=${pgsql.dbname}</argument>
-                <argument>--db-port=${pgsql.port}</argument>
-                <argument>--db-user=${pgsql.user}</argument>
-                <argument>--db-password=${pgsql.password}</argument>
-                <argument>--hit-refresh</argument>
-              </arguments>
             </configuration>
           </plugin>
         </plugins>
