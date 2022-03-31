@@ -3,34 +3,38 @@
 [![We recommend IntelliJ IDEA](https://www.elegantobjects.org/intellij-idea.svg)](https://www.jetbrains.com/idea/)
 
 [![Javadoc](http://www.javadoc.io/badge/com.baudoliver7/jdbc-toolset.svg)](http://www.javadoc.io/doc/com.baudoliver7/jdbc-toolset)
-[![License](https://img.shields.io/badge/License-Surati-important.svg)](https://github.com/baudoliver7/jdbc-toolset/blob/master/LICENSE.txt)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/baudoliver7/jdbc-toolset/blob/master/LICENSE.txt)
 [![codecov](https://codecov.io/gh/baudoliver7/jdbc-toolset/branch/master/graph/badge.svg)](https://codecov.io/gh/baudoliver7/jdbc-toolset)
 [![Hits-of-Code](https://hitsofcode.com/github/baudoliver7/jdbc-toolset)](https://hitsofcode.com/view/github/baudoliver7/jdbc-toolset)
 [![Maven Central](https://img.shields.io/maven-central/v/com.baudoliver7/jdbc-toolset.svg)](https://maven-badges.herokuapp.com/maven-central/com.baudoliver7/jdbc-toolset)
 [![PDD status](http://www.0pdd.com/svg?name=baudoliver7/jdbc-toolset)](http://www.0pdd.com/p?name=baudoliver7/jdbc-toolset)
 
-A toolset for Jdbc
+A toolset for `Jdbc`
 
-# Some tools
-## DataSource and Connection wrappers
+There is some tools:
+
+### `DataSourceWrap` and `ConnectionWrap`
+
 We give some wrappers to easily decorate `DataSource` and `Connection`.
 
 ```java
 public final MyDataSource extends DataSourceWrap {
     
     public MyDataSource(final DataSource origin) {
-        ...
+        super(origin);
     }
 }
 
 public final MyConnection extends ConnectionWrap {
 
     public MyConnection(final Connection origin) {
-    ...
+        super(origin)
     }
 }
 ``` 
-## A connection which can never be closed : ClosedShieldConnection
+
+### `LockedConnection`
+
 Sometimes, we don't want some pieces of code to close your connection after use. So, to prevent
 them to close your connection, you can decorate it with `LockedConnection` before give them
 like this:
@@ -40,7 +44,9 @@ new LockedConnection(
     connection
 )
 ```
-## A DataSource that gives only one connection per thread
+
+### `LocalLockedDataSource`
+
 Sometimes, we are in situations where we want to use only one connection during the current thread
 and be sure that all modifications are taken into account only when we decide to explicitly commit
 them. Then, `LocalLockedDataSource` is your friend in such case. Just decorate your datasource like
@@ -71,8 +77,9 @@ cthread.get().commit();
 final Connection conn3 = uds.getConnection();
 ```
 
-## Use it in your project
-If you're using Maven, you should add this to your <code>pom.xml</code> dependencies:
+### Use it in your project
+
+If you're using Maven, you should add it to your <code>pom.xml</code> dependencies:
 
 ```xml
 <dependency>
@@ -82,7 +89,8 @@ If you're using Maven, you should add this to your <code>pom.xml</code> dependen
 </dependency>
 ``` 
 
-## How to contribute
+### How to contribute
+
 Fork repository, make changes, send us a pull request. We will review
 your changes and apply them to the `master` branch shortly, provided
 they don't violate our quality standards. To avoid frustration, before
@@ -92,7 +100,7 @@ sending us your pull request please run full Maven build:
 
 Keep in mind that JDK 8 and Maven 3.1.0 are the lowest versions you may use.
 
-## Got questions ?
+### Got questions ?
 
 If you have questions or general suggestions, don't hesitate to submit
 a new [Github issue](https://github.com/baudoliver7/jdbc-toolset/issues/new).
