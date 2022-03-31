@@ -11,9 +11,9 @@
 
 A toolset for `Jdbc`
 
-There is some tools :
+There is some tools:
 
-## DataSource and Connection wrappers
+### `DataSourceWrap` and `ConnectionWrap`
 
 We give some wrappers to easily decorate `DataSource` and `Connection`.
 
@@ -21,18 +21,19 @@ We give some wrappers to easily decorate `DataSource` and `Connection`.
 public final MyDataSource extends DataSourceWrap {
     
     public MyDataSource(final DataSource origin) {
-        ...
+        super(origin);
     }
 }
 
 public final MyConnection extends ConnectionWrap {
 
     public MyConnection(final Connection origin) {
-    ...
+        super(origin)
     }
 }
 ``` 
-## LockedConnection: A connection which can never be closed
+
+### `LockedConnection`
 
 Sometimes, we don't want some pieces of code to close your connection after use. So, to prevent
 them to close your connection, you can decorate it with `LockedConnection` before give them
@@ -43,7 +44,8 @@ new LockedConnection(
     connection
 )
 ```
-## LocalLockedDataSource: a DataSource that gives only one connection per thread
+
+### `LocalLockedDataSource`
 
 Sometimes, we are in situations where we want to use only one connection during the current thread
 and be sure that all modifications are taken into account only when we decide to explicitly commit
@@ -75,7 +77,7 @@ cthread.get().commit();
 final Connection conn3 = uds.getConnection();
 ```
 
-## Use it in your project
+### Use it in your project
 
 If you're using Maven, you should add it to your <code>pom.xml</code> dependencies:
 
@@ -87,7 +89,7 @@ If you're using Maven, you should add it to your <code>pom.xml</code> dependenci
 </dependency>
 ``` 
 
-## How to contribute
+### How to contribute
 
 Fork repository, make changes, send us a pull request. We will review
 your changes and apply them to the `master` branch shortly, provided
@@ -98,7 +100,7 @@ sending us your pull request please run full Maven build:
 
 Keep in mind that JDK 8 and Maven 3.1.0 are the lowest versions you may use.
 
-## Got questions ?
+### Got questions ?
 
 If you have questions or general suggestions, don't hesitate to submit
 a new [Github issue](https://github.com/baudoliver7/jdbc-toolset/issues/new).
