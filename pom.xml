@@ -68,7 +68,26 @@ SOFTWARE.
     <developerConnection>scm:git:git://github.com:baudoliver7/jdbc-toolset.git</developerConnection>
     <url>http://github.com/baudoliver7/jdbc-toolset/tree/master</url>
   </scm>
+  <properties>
+    <jooq.version>3.14.15</jooq.version>
+  </properties>
   <dependencies>
+    <dependency>
+      <groupId>org.jooq</groupId>
+      <artifactId>jooq</artifactId>
+      <version>${jooq.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jooq</groupId>
+      <artifactId>jooq-meta</artifactId>
+      <version>${jooq.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jooq</groupId>
+      <artifactId>jooq-codegen</artifactId>
+      <version>${jooq.version}</version>
+    </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>

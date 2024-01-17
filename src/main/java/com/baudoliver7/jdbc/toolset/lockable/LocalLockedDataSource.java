@@ -93,13 +93,11 @@ public final class LocalLockedDataSource extends DataSourceWrap {
      * @throws SQLException If fails
      */
     private Connection newConnection() throws SQLException {
-        synchronized (this.connection) {
-            final Connection connect =  super.getConnection();
-            connect.setAutoCommit(false);
-            connect.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-            this.connection.set(connect);
-            return connect;
-        }
+        final Connection connect =  super.getConnection();
+        connect.setAutoCommit(false);
+        connect.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+        this.connection.set(connect);
+        return connect;
     }
 
     /**
@@ -112,12 +110,10 @@ public final class LocalLockedDataSource extends DataSourceWrap {
     private Connection newConnection(
         final String username, final String password
     ) throws SQLException {
-        synchronized (this.connection) {
-            final Connection connect =  super.getConnection(username, password);
-            connect.setAutoCommit(false);
-            connect.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-            this.connection.set(connect);
-            return connect;
-        }
+        final Connection connect =  super.getConnection(username, password);
+        connect.setAutoCommit(false);
+        connect.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+        this.connection.set(connect);
+        return connect;
     }
 }
