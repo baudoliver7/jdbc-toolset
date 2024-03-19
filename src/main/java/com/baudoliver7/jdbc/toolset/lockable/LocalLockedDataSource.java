@@ -25,95 +25,38 @@ package com.baudoliver7.jdbc.toolset.lockable;
 
 import com.baudoliver7.jdbc.toolset.wrapper.DataSourceWrap;
 import java.sql.Connection;
-import java.sql.SQLException;
 import javax.sql.DataSource;
 
 /**
- * Data source that is locked to one connection per thread.
- * <p>This connection automatically opens a transaction.
- * You have to commit or rollback via connection stored in the local thread before
- * passing to another one for the same thread.</p>
+ * Data source that is locked to one connection.
+ * <p>The same connection is always provided without possibility to commit or rollback.</p>
  *
  * @since 0.1
  */
 public final class LocalLockedDataSource extends DataSourceWrap {
 
     /**
-     * Thread connection.
+     * Connection locked on.
      */
-    private final ThreadLocal<Connection> connection;
+    private final Connection connection;
 
     /**
      * Ctor.
      * @param origin Data source to wrap
-     * @param connection Thread connection
+     * @param connection Connection used
      */
-    public LocalLockedDataSource(
-        final DataSource origin, final ThreadLocal<Connection> connection
-    ) {
+    public LocalLockedDataSource(final DataSource origin, final Connection connection) {
         super(origin);
         this.connection = connection;
     }
 
     @Override
-    public Connection getConnection() throws SQLException {
-        final Connection conn;
-        if (this.connection.get() == null) {
-            conn = this.newConnection();
-        } else {
-            if (this.connection.get().isClosed()) {
-                conn = this.newConnection();
-            } else {
-                conn = this.connection.get();
-            }
-        }
-        return new LockedConnection(conn);
+    public Connection getConnection() {
+        return new LockedConnection(this.connection);
     }
 
     @Override
-    public Connection getConnection(
-        final String username, final String password
-    ) throws SQLException {
-        final Connection conn;
-        if (this.connection.get() == null) {
-            conn = this.newConnection(username, password);
-        } else {
-            if (this.connection.get().isClosed()) {
-                conn = this.newConnection(username, password);
-            } else {
-                conn = this.connection.get();
-            }
-        }
-        return new LockedConnection(conn);
-    }
-
-    /**
-     * Generate new connection.
-     * @return Connection
-     * @throws SQLException If fails
-     */
-    private Connection newConnection() throws SQLException {
-        final Connection connect =  super.getConnection();
-        connect.setAutoCommit(false);
-        connect.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-        this.connection.set(connect);
-        return connect;
-    }
-
-    /**
-     * Generate new connection.
-     * @param username Username
-     * @param password Password
-     * @return Connection
-     * @throws SQLException If fails
-     */
-    private Connection newConnection(
-        final String username, final String password
-    ) throws SQLException {
-        final Connection connect =  super.getConnection(username, password);
-        connect.setAutoCommit(false);
-        connect.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-        this.connection.set(connect);
-        return connect;
+    public Connection getConnection(final String username, final String password) {
+        return new LockedConnection(this.connection);
     }
 }
