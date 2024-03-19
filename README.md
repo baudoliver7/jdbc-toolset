@@ -53,28 +53,25 @@ them. Then, `LocalLockedDataSource` is your friend in such case. Just decorate y
 this :
 
 ```java
-final ThreadLocal<Connection> cthread = new ThreadLocal<>();
-final DataSource uds = new LocalLockedDataSource(
-    datasource, cthread
-);
-
-final Connection conn1 = uds.getConnection();
-// We do here some operations with our connection.
-// After that, we attempt to commit and close it.
-conn1.commit(); // no effect
-conn1.close(); // no effect
-    ...
-// Somewhere else in the same thread, we want a connection
-// to do another operations.
-final Connection conn2 = uds.getConnection(); // we get here the current connection
-    ...
-    ...
-// We choose now to commit all changes.
-// For that, we should use connection that is stored in the local thread `cthread`.
-cthread.get().commit();
-
-// After that, trying to get a connection will return a new connection for the current thread.
-final Connection conn3 = uds.getConnection();
+try (final Connection connection = datasource.getConnection()) {
+    final DataSource uds = new LocalLockedDataSource(
+        datasource, connection
+    );
+    final Connection conn1 = uds.getConnection();
+    // We do here some operations with our connection.
+    // After that, we attempt to commit and close it.
+        conn1.commit(); // no effect
+        conn1.close(); // no effect
+        ...
+    // Somewhere else in the same thread, we want a connection
+    // to do another operations.
+    final Connection conn2 = uds.getConnection(); // we get here the current connection
+        ...
+        ...
+    // We choose now to commit all changes.
+    // For that, we should use connection that is stored in the local thread `cthread`.
+        cthread.get().commit();
+};
 ```
 
 ## Use it in your project
