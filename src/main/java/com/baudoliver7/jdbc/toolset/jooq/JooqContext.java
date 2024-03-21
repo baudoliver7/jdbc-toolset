@@ -51,7 +51,7 @@ public final class JooqContext extends DefaultDSLContext {
         super(
             src,
             JooqContext.dialectOf(src),
-            new Settings().withRenderSchema(false)
+            new Settings().withRenderSchema(true)
         );
     }
 
